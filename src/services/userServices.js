@@ -1,9 +1,5 @@
-import e from "express";
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
-import { where } from "sequelize";
-import user from "../models/user";
-import { raw } from "body-parser";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -15,18 +11,19 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email);
             if (isExist) {
                 // user already exist => compare password
-                let user = await db.User.findOne({
+                let userLogin = await db.User.findOne({
                     attributes: ['email', 'password', 'roleId'],
                     where: { email: email },
                     raw: true
                 })
-                if (user) {
-                    let checkUserPassword = await bcrypt.compareSync(password, user.password); // false
+                console.log("Input User Login : ", userLogin)
+                if (userLogin) {
+                    let checkUserPassword = await bcrypt.compareSync(password, userLogin.password); // false
                     if (checkUserPassword) {
                         user.ErrorCode = 0;
                         user.errorMessage = `Login complete !!!`
                         delete user.password,
-                            user.user = user
+                            user.user = userLogin
                     } else {
                         user.ErrorCode = 3;
                         user.errorMessage = `Your Password is wrong !!!, plz try again`
@@ -36,11 +33,13 @@ let handleUserLogin = (email, password) => {
                     user.ErrorCode = 2;
                     user.errorMessage = `User not found`
                 }
-            } else {
+            }
+            else {
                 user.ErrorCode = 1;
                 user.errorMessage = `Your Email isn't exist in our system. Plz try another email !!! `
             }
             resolve(user)
+            console.log(user)
         } catch (error) {
             reject(error)
         }
@@ -158,7 +157,7 @@ let DeleteUser = (userId) => {
                 ErrorCode: 0,
                 Message: "Delete a user successfully"
             })
-        } catch (error) {   
+        } catch (error) {
             reject(error)
         }
     })

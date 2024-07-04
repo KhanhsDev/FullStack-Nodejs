@@ -1,5 +1,7 @@
 import userServices from "../services/userServices"
 
+
+
 let handleLogin = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password
@@ -19,6 +21,9 @@ let handleLogin = async (req, res) => {
         })
     }
 }
+
+
+
 let handleGetAllUser = async (req, res) => {
     let id = req.query.id // all / id    
     if (!id) {
