@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
 
@@ -12,7 +13,7 @@ let handleUserLogin = (email, password) => {
             if (isExist) {
                 // user already exist => compare password
                 let userLogin = await db.User.findOne({
-                    attributes: ['email', 'password', 'roleId'],
+                    attributes: ['email', 'password', 'roleId', 'firstName', 'lastName'],
                     where: { email: email },
                     raw: true
                 })
@@ -201,6 +202,30 @@ let UpdateUser = (data) => {
         }
     })
 }
+
+let getAllCodeService = (typeInput) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!typeInput) {
+                resolve({
+                    ErrorCode: 1,
+                    errorMessage: "Missing Input parameter"
+                })
+            } else {
+                let res = {};
+                let allcode = await db.Allcode.findAll({
+                    where: { type: typeInput }
+                })
+                res.ErrorCode = 0;
+                res.data = allcode
+                resolve(res)
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
     handleUserLogin: handleUserLogin,
     checkUserEmail: checkUserEmail,
@@ -208,4 +233,5 @@ module.exports = {
     createNewUser: createNewUser,
     DeleteUser: DeleteUser,
     UpdateUser: UpdateUser,
+    getAllCodeService: getAllCodeService
 }

@@ -1,3 +1,4 @@
+import e from "express";
 import userServices from "../services/userServices"
 
 
@@ -73,11 +74,25 @@ let handleDeleteUser = async (req, res) => {
     console.log(Message)
     return res.status(200).json(Message)
 }
+
+let getAllCode = async (req, res) => {
+    try {
+        let data = await userServices.getAllCodeService(req.query.type)
+        return res.status(200).json(data)
+    } catch (error) {
+        console.log("Get all code error", error)
+        return res.status(200).json({
+            ErrorCode: -1,
+            errorMessage: "Error From Server"
+        })
+    }
+}
 module.exports = {
     handleLogin: handleLogin,
     handleGetAllUser: handleGetAllUser,
     handleCreateNewUser: handleCreateNewUser,
     handleGetUserEmail: handleGetUserEmail,
     handleUpdateUser: handleUpdateUser,
-    handleDeleteUser: handleDeleteUser
+    handleDeleteUser: handleDeleteUser,
+    getAllCode: getAllCode
 }
