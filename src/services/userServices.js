@@ -1,6 +1,7 @@
 import { where } from "sequelize";
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
+import positions from "../models/positions";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -110,9 +111,10 @@ let createNewUser = (data) => {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     address: data.address,
-                    gender: data.gender === 1 ? '1' : '0',
+                    gender: data.gender,
                     roleId: data.roleId,
                     phonenumber: data.phonenumber,
+                    positionId: data.position,
                 })
                 resolve({
                     ErrorCode: 0,
@@ -213,7 +215,7 @@ let getAllCodeService = (typeInput) => {
                 })
             } else {
                 let res = {};
-                let allcode = await db.Allcode.findAll({
+                let allcode = await db.Positions.findAll({
                     where: { type: typeInput }
                 })
                 res.ErrorCode = 0;
