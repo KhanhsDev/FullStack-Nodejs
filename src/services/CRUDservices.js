@@ -15,7 +15,7 @@ let createNewUser = (data) => {
                 firstName: data.firstName,
                 lastName: data.lastName,
                 address: data.address,
-                gender: data.gender === 1 ? '1' : '0',
+                gender: data.gender,
                 roleId: data.roleId,
                 phonenumber: data.phonenumber,
             })
