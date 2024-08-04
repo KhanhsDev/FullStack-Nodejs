@@ -179,12 +179,12 @@ let UpdateUser = (data) => {
                 raw: false
             })
             if (user) {
-                user.email = data.email
                 user.firstName = data.firstName
                 user.lastName = data.lastName
                 user.address = data.address
                 user.gender = data.gender
                 user.roleId = data.roleId
+                user.positionId = data.positionId
                 user.phonenumber = data.phonenumber
                 await user.save()
                 resolve({
