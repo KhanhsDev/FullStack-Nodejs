@@ -1,6 +1,7 @@
 import express from "express";
 import homeController from "../controller/homeController"
 import userController from "../controller/userController"
+import doctorController from "../controller/doctorController"
 import user from "../models/user";
 let router = express.Router();
 
@@ -23,6 +24,7 @@ let initWebRoutes = (app) => {
     router.get('/api/get-user-email', userController.handleGetUserEmail)
 
     router.get('/api/allcode', userController.getAllCode)
+    router.get('/api/getAllDoctor', doctorController.getAllDoctor)
     return app.use("/", router);
 }
 

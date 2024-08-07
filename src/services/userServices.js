@@ -239,5 +239,5 @@ module.exports = {
     createNewUser: createNewUser,
     DeleteUser: DeleteUser,
     UpdateUser: UpdateUser,
-    getAllCodeService: getAllCodeService
+    getAllCodeService: getAllCodeService,
 }

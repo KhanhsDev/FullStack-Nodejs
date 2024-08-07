@@ -41,7 +41,6 @@ let handleGetAllUser = async (req, res) => {
         ErrorCode: 0,
         errorMessage: 'gel all user successfully',
         users
-
     })
 }
 let handleCreateNewUser = async (req, res) => {
@@ -87,6 +86,7 @@ let getAllCode = async (req, res) => {
         })
     }
 }
+
 module.exports = {
     handleLogin: handleLogin,
     handleGetAllUser: handleGetAllUser,
@@ -94,5 +94,5 @@ module.exports = {
     handleGetUserEmail: handleGetUserEmail,
     handleUpdateUser: handleUpdateUser,
     handleDeleteUser: handleDeleteUser,
-    getAllCode: getAllCode
+    getAllCode: getAllCode,
 }
