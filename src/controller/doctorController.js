@@ -3,7 +3,6 @@ import doctorServices from "../services/doctorServices"
 let getAllDoctor = async (req, res) => {
     try {
         let data = await doctorServices.getAllDoctorService(req.query.roleId)
-        console.log(data)
         return res.status(200).json({
             ErrorCode: 0,
             errorMessage: 'gel all doctor successfully',
