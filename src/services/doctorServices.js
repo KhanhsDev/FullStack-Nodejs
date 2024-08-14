@@ -1,5 +1,5 @@
 
-import { Model } from "sequelize";
+import { Model, where } from "sequelize";
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
 import { raw } from "body-parser";
@@ -36,7 +36,71 @@ let getAllDoctorService = (typeInput) => {
         }
     })
 }
+let saveInforDoctor = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown) {
+                resolve({
+                    ErrorCode: 1,
+                    errorMessage: "Missing input parameter"
+                })
+            }
+            else {
+                await db.Markdown.create({
+                    contentHTML: data.contentHTML,
+                    contentMarkdown: data.contentMarkdown,
+                    description: data.description,
+                    doctorId: data.doctorId
+                })
+                resolve({
+                    ErrorCode: 0,
+                    errorMessage: "Save informations doctor successfully"
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+
+}
+let getDetailDoctorServices = (doctorId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log(doctorId)
+            if (!doctorId) {
+                resolve({
+                    ErrorCode: 1,
+                    errorMessage: "Missing input parameter"
+                })
+            } else {
+                let data = await db.User.findOne({
+                    where: {
+                        id: doctorId
+                    },
+                    attributes: {
+                        exclude: ['password', 'image']
+                    },
+                    include: [
+                        { model: db.Markdown, attributes: ['description', 'contentHTML', 'contentMarkdown'] },
+                        { model: db.Positions, as: 'positionData', attributes: ['value_en', 'value_vi'] },
+
+                    ],
+                    raw: true,
+                    nest: true
+                })
+                resolve({
+                    ErrorCode: 0,
+                    data: data
+                })
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
 module.exports = {
-    getAllDoctorService: getAllDoctorService
+    getAllDoctorService: getAllDoctorService,
+    saveInforDoctor: saveInforDoctor,
+    getDetailDoctorServices: getDetailDoctorServices
 
 }
