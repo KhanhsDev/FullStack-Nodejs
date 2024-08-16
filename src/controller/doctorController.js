@@ -32,6 +32,7 @@ let getDetailDoctor = async (req, res) => {
     try {
         console.log(req.query.id)
         let infor = await doctorServices.getDetailDoctorServices(req.query.id)
+        console.log(infor)
         return res.status(200).json(infor)
     } catch (error) {
         console.log("get detail doctor erroe from server: ", error)
