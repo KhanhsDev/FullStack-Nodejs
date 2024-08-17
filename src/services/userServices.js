@@ -18,7 +18,6 @@ let handleUserLogin = (email, password) => {
                     where: { email: email },
                     raw: true
                 })
-                console.log("Input User Login : ", userLogin)
                 if (userLogin) {
                     let checkUserPassword = await bcrypt.compareSync(password, userLogin.password); // false
                     if (checkUserPassword) {
@@ -41,7 +40,6 @@ let handleUserLogin = (email, password) => {
                 user.errorMessage = `Your Email isn't exist in our system. Plz try another email !!! `
             }
             resolve(user)
-            console.log(user)
         } catch (error) {
             reject(error)
         }
@@ -96,7 +94,6 @@ let createNewUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let check = await checkUserEmail(data.email)
-            console.log(check)
             if (check === true) {
                 resolve({
                     ErrorCode: 1,

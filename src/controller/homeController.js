@@ -7,7 +7,6 @@ let getCRUDPage = (req, res) => {
 let postCRUD = async (req, res) => {
 
     let message = await CRUDservices.createNewUser(req.body);
-    console.log(message)
     return res.status(200).json(message)
 }
 let getAllData = async (req, res) => {
@@ -54,7 +53,6 @@ let getUserDelete = async (req, res) => {
 }
 let postDeleteUser = async (req, res) => {
     let datauserdelete = req.body
-    console.log(datauserdelete)
     let AllUsers = await CRUDservices.deleteUser(datauserdelete)
     res.render('displayUsers.ejs', {
         dataTable: AllUsers

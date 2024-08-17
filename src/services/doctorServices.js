@@ -3,6 +3,7 @@ import { Model, where } from "sequelize";
 import db from "../models/index";
 import bcrypt from 'bcryptjs';
 import { raw } from "body-parser";
+import user from "../models/user";
 
 let getAllDoctorService = (typeInput) => {
     return new Promise(async (resolve, reject) => {
@@ -39,19 +40,33 @@ let getAllDoctorService = (typeInput) => {
 let saveInforDoctor = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown) {
+            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown || !data.action) {
                 resolve({
                     ErrorCode: 1,
                     errorMessage: "Missing input parameter"
                 })
             }
             else {
-                await db.Markdown.create({
-                    contentHTML: data.contentHTML,
-                    contentMarkdown: data.contentMarkdown,
-                    description: data.description,
-                    doctorId: data.doctorId
-                })
+                if (data.action === 'ADD') {
+                    await db.Markdown.create({
+                        contentHTML: data.contentHTML,
+                        contentMarkdown: data.contentMarkdown,
+                        description: data.description,
+                        doctorId: data.doctorId
+                    })
+                }
+                else if (data.action === 'EDIT') {
+                    let doctor = await db.Markdown.findOne({
+                        where: { doctorId: data.doctorId },
+                        raw: false
+                    })
+                    if (doctor) {
+                        doctor.contentHTML = data.contentHTML;
+                        doctor.contentMarkdown = data.contentMarkdown;
+                        doctor.description = data.description;
+                        await doctor.save()
+                    }
+                }
                 resolve({
                     ErrorCode: 0,
                     errorMessage: "Save informations doctor successfully"
@@ -66,7 +81,6 @@ let saveInforDoctor = (data) => {
 let getDetailDoctorServices = (doctorId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(doctorId)
             if (!doctorId) {
                 resolve({
                     ErrorCode: 1,

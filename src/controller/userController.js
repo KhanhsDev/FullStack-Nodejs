@@ -6,7 +6,6 @@ import userServices from "../services/userServices"
 let handleLogin = async (req, res) => {
     let email = req.body.email;
     let password = req.body.password
-    console.log("email:" + email, "password  :" + password)
     if (!email || !password) {
         return res.status(500).json({
             ErrorCode: 1,
@@ -44,17 +43,13 @@ let handleGetAllUser = async (req, res) => {
     })
 }
 let handleCreateNewUser = async (req, res) => {
-    console.log(req.body)
     let Message = await userServices.createNewUser(req.body);
-    console.log(Message)
     return res.status(200).json(Message)
 }
 
 let handleGetUserEmail = async (req, res) => {
     let email = req.body;
-    console.log(email)
     let UserEmail = await userServices.checkUserEmail(email)
-    console.log(UserEmail)
     return res.status(200).json(UserEmail)
 }
 let handleUpdateUser = async (req, res) => {
@@ -70,7 +65,6 @@ let handleDeleteUser = async (req, res) => {
         })
     }
     let Message = await userServices.DeleteUser(req.body.id)
-    console.log(Message)
     return res.status(200).json(Message)
 }
 
